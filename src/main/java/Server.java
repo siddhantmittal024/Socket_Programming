@@ -2,6 +2,14 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.stream.file.FileSinkImages;
+import org.graphstream.stream.file.FileSinkImages.OutputType;
+import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
 
 public class Server {
 
@@ -79,6 +87,9 @@ public class Server {
 
 
     public static void main(String args[])throws Exception {
+
+        System.setProperty("org.graphstream.ui", "swing");
+
         try{
             ServerSocket serverSocket = new ServerSocket(5678);
             System.out.println("Server Started!!");
@@ -100,8 +111,46 @@ public class Server {
                         globalAdjMatrix[i][j] = input.readInt();
 
                 // Convert adjacency matrix to adjacency list
-                ArrayList<Integer>[] adjList = new ArrayList[nodes];
+                ArrayList<Integer>[] adjList;
                 adjList = matrix_to_list(globalAdjMatrix);
+
+                MultiGraph graph = new MultiGraph("USE");
+
+                graph.setAttribute("ui.quality");
+                graph.setAttribute("ui.antialias");
+
+                for(int i=0;i<nodes;i++){
+                    graph.addNode(String.valueOf(i+1));
+                }
+
+                for(int i=0;i<nodes;i++){
+                    Node e1=graph.getNode(String.valueOf(i+1));
+                    e1.setAttribute("ui.style", "shape:circle;fill-color: yellow;size: 40px;");
+                    e1.setAttribute("ui.label", String.valueOf((char)(i+ (int)'A')));
+                }
+
+                for(int i=0;i<nodes;i++){
+                    for(int j=0;j<nodes;j++) {
+                        if(globalAdjMatrix[i][j]==1) {
+                            String init = String.valueOf(i + 1);
+                            String dest = String.valueOf(j + 1);
+                            String id = init+dest;
+                            graph.addEdge(id, init, dest, true);
+                        }
+                    }
+                }
+
+                FileSinkImages img = FileSinkImages.createDefault();
+
+                img.setOutputType(OutputType.JPG);
+                img.setResolution(400,400);
+                img.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+                img.writeAll(graph,"graph.jpg");
+
+                BufferedImage image = ImageIO.read(new File("D:\\Sockets_Assignment\\graph.jpg"));
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ImageIO.write(image, "jpg", byteArrayOutputStream);
 
                 // Check whether path length is present in the array
                 boolean pathExists = checkPathLength(adjList, start, end, nodes, pathLength);
@@ -115,10 +164,16 @@ public class Server {
 
                 // Send the response
                 output.writeChar(response);
-                //flushing the img here
-                System.out.println("Flushed Bytes: " + System.currentTimeMillis());
 
+                byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+
+                output.write(size);
+                output.write(byteArrayOutputStream.toByteArray());
+                output.flush();
+                System.out.println("Flushed: " + System.currentTimeMillis());
+                //Thread.sleep(120000);
                 System.out.println("Closing: " + System.currentTimeMillis());
+                socket.close();
 
             }
         } catch(IOException ignored){}

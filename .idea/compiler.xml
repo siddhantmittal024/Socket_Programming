@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Socket_CN2022_Siddhant_Mittal" />
+        <module name="Sockets_Assignment" />
       </profile>
     </annotationProcessing>
   </component>

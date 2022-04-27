@@ -1,8 +1,21 @@
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
-public class Client {
+public class Client extends JFrame{
+
+    static Image global_img;
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        Image img = global_img;
+        g.drawImage(img, 100, 100, this);
+    }
 
     /* Main Function */
     public static void main(String[] args) {
@@ -15,7 +28,7 @@ public class Client {
         int nodes = input.nextInt();
 
         // Declare the matrix
-        int adjMatrix[][] = new int[nodes][nodes];
+        int[][] adjMatrix = new int[nodes][nodes];
         int entry;
         // Read the matrix values
         System.out.println("Enter the elements of the matrix");
@@ -33,9 +46,9 @@ public class Client {
         System.out.println("This is the matrix that was entered\n");
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < nodes; i++) {
-            s.append((char)(i+ (int)'A') + ": ");
+            s.append((char) (i + (int) 'A')).append(": ");
             for (int j : adjMatrix[i]) {
-                s.append((j) + " ");
+                s.append(j).append(" ");
             }
             s.append("\n");
         }
@@ -99,12 +112,27 @@ public class Client {
                 statement = "No, there exists no path of length " + pathLength + " from node " + startNode+ " to node " + endNode;
             }
 
-            // Print the statement
             System.out.println(statement);
 
-            // Call the constructor to load image
+            byte[] sizeAr = new byte[4];
+            dataInput.read(sizeAr);
+
+            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+            byte[] imageArray = new byte[size];
+            dataInput.read(imageArray);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageArray));
+            global_img = image;
+
+            JFrame frame = new Client();
+            frame.setTitle("Client");
+            frame.setSize(600, 600);
+            frame.setVisible(true);
+
+            System.out.println("Painting the new image.");
+            System.out.println("Received Bytes " + image.getHeight() + "x" + image.getWidth() + " : " + System.currentTimeMillis());
+
             dataOutput.close();
-            clientSocket.close(); // close the connection
+            clientSocket.close();
 
         } catch (IOException ex){}
 
