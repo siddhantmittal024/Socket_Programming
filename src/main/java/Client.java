@@ -52,7 +52,7 @@ public class Client extends JFrame{
             }
             s.append("\n");
         }
-        System.out.print(s.toString());
+        System.out.print(s);
 
         // Input path length
         System.out.println("Enter the path length");
