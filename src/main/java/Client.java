@@ -1,3 +1,12 @@
+/*
+ * CN-2022 GRADED LAB
+ * SIDDHANT MITTAL
+ * 1910110388
+ */
+
+/*CLIENT SIDE CODE*/
+
+/* IMPORTS */
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -17,7 +26,7 @@ public class Client extends JFrame{
         g.drawImage(img, 100, 100, this);
     }
 
-    /* Main Function */
+    /* MAIN FUNCTION */
     public static void main(String[] args) {
 
         // Collect inputs from the user

@@ -1,3 +1,12 @@
+/*
+ * CN-2022 GRADED LAB
+ * SIDDHANT MITTAL
+ * 1910110388
+ */
+
+/*SERVER SIDE CODE*/
+
+/* IMPORTS */
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -12,126 +21,140 @@ import org.graphstream.stream.file.FileSinkImages.OutputType;
 import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
 
 public class Server {
-
+    /* GLOBAL VARIABLES */
     static int nodes;
-    static int[][] globalAdjMatrix = new int[10][10];
+    static int[][] gAdjMatrix = new int[10][10];
     static DataOutputStream output;
 
-    public static ArrayList<Integer>[] matrix_to_list(int[][] mat){
-        int vertices = mat[0].length;
+    /* FUNCTION TO CHECK IF DESIRED PATH LENGTH IS PRESENT IN THE GIVEN LENGTHS */
+    public static boolean lengthCheck(ArrayList<Integer>[] list, int source, int dest, int vertices, int reqLength) {
 
-        ArrayList<Integer>[] adjList = new ArrayList[vertices];
+        //ARRAY OF VISITED NODES
+        boolean[] hasVisited = new boolean[vertices];
+        ArrayList<Integer> path = new ArrayList<>();
 
-        for(int i=0;i<vertices;i++){
-            adjList[i]=(new ArrayList<Integer>());
+        //ADD THE SOURCE NODE AND SUBTRACT 1
+        path.add(source);
+        ArrayList<Integer> pathLen = new ArrayList<>();
+
+        //CALL DFS FUNCTION RECURSIVELY
+        DFS(list, source, dest, pathLen, hasVisited, path);
+
+        //RETURN IF PATH LENGTH EXIST OR NOT
+        return pathLen.contains(reqLength);
+    }
+
+    /* FUNCTION THAT RECURSIVELY CHECKS PATH */
+    private static void DFS(ArrayList<Integer>[] list, Integer source, Integer dest, List<Integer> lengths, boolean[] hasVisited, List<Integer> pathList) {
+
+        if (source.equals(dest)) {
+
+            //ADD PATH LENGTH TO LIST
+            lengths.add(pathList.size()-1);
+
+            //IF NODE FOUND RETURN
+            return;
         }
 
-        for (int i = 0; i < mat[0].length; i++) {
-            for (int j = 0; j < mat.length; j++) {
-                if (mat[i][j] >= 1) {
-                    adjList[i].add(j);
+        //MARK CURR NODE AS VISITED
+        hasVisited[source] = true;
+
+        //VISIT ALL ADJ NODES FOR ALL VERTICES
+        for (Integer i : list[source]) {
+            if (!hasVisited[i]) {
+                pathList.add(i);
+                DFS(list, i, dest, lengths, hasVisited, pathList);
+                pathList.remove(i);
+            }
+        }
+
+        //MARK THE CURR NODE
+        hasVisited[dest] = false;
+    }
+
+    /* FUNCTION TO TRANSFORM MATRIX TO LIST */
+    public static ArrayList<Integer>[] matrix_to_list(int[][] matrix){
+
+        /* STORING NUMBER OF VERTICES */
+        int v = matrix[0].length;
+
+        ArrayList<Integer>[] list = new ArrayList[v];
+
+        /* CREATING A NEW LIST FOR EACH VERTEX */
+        for(int i=0;i<v;i++){
+            list[i]=(new ArrayList<Integer>());
+        }
+
+        /* STORING THE VERTICES IN LIST */
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                if (matrix[i][j] >= 1) {
+                    list[i].add(j);
                 }
             }
         }
 
-        return adjList;
+        return list;
     }
 
-    /* Function to check if the required path length in the given path lengths */
-    public static boolean checkPathLength(ArrayList<Integer>[] list, int source, int dest, int vertices, int reqLength) {
-        // Create an array of visited nodes
-        boolean[] hasVisited = new boolean[vertices];
-        ArrayList<Integer> pathList = new ArrayList<>();
+    /* MAIN FUNCTION */
+    public static void main(String[] args)throws Exception {
 
-        // add the source node to the path (subtract 1 from path length)
-        pathList.add(source);
-        ArrayList<Integer> pathLength = new ArrayList<>();
-
-        // Call recursive DFS function
-        pathLengthDFS(list, source, dest, pathLength, hasVisited, pathList);
-
-        // Return whether the path length exists or not
-        return pathLength.contains(reqLength);
-    }
-
-    /* Function to recursively check the path and then add to the list of path lengths */
-    private static void pathLengthDFS(ArrayList<Integer>[] adjList, Integer s, Integer d, List<Integer> lengths, boolean[] hasVisited, List<Integer> funcPathList) {
-
-        if (s.equals(d)) {
-
-            // Add the path length to the path lengths list (subtract 1 to remove source node)
-            lengths.add(funcPathList.size()-1);
-
-            // If we have found a matching node then we can directly return after adding the length to tha path lenght
-            return;
-        }
-
-        // Mark the current node as visited
-        hasVisited[s] = true;
-
-        // Recur to all the adjacent nodes for all the vertices
-        for (Integer i : adjList[s]) {
-            if (!hasVisited[i]) {
-                // store current node in the path to begin traversal
-                funcPathList.add(i);
-                pathLengthDFS(adjList, i, d, lengths, hasVisited, funcPathList);
-
-                // remove current node from the path
-                funcPathList.remove(i);
-            }
-        }
-
-        // Mark the current node
-        hasVisited[d] = false;
-    }
-
-
-    public static void main(String args[])throws Exception {
-
+        //SETTING SYSTEM PROP FOR INTEGRATING GRAPHSTREAM WITH SWING
         System.setProperty("org.graphstream.ui", "swing");
 
         try{
+            //CREATING SERVER SOCKET BINDED TO A PORT
             ServerSocket serverSocket = new ServerSocket(5678);
             System.out.println("Server Started!!");
 
             while(true){
                 Socket socket = serverSocket.accept();
 
+                //DATA INPUT STREAM TO TAKE INPUT FROM CLIENT
                 DataInputStream input = new DataInputStream(socket.getInputStream());
 
+                //OUTPUT STREAM TO STORE THE OUTPUT AND SEND TO CLIENT
                 output = new DataOutputStream(socket.getOutputStream());
 
+                //READING DATA FROM CLIENT
                 int pathLength = input.readInt();
                 int start = input.readInt();
                 int end = input.readInt();
 
+                //STORING THE INPUT MATRIX
                 nodes = input.readInt();
                 for (int i = 0; i < nodes; i++)
                     for (int j = 0; j < nodes; j++)
-                        globalAdjMatrix[i][j] = input.readInt();
+                        gAdjMatrix[i][j] = input.readInt();
 
-                // Convert adjacency matrix to adjacency list
+                //CONVERTING MATRIX TO LIST
                 ArrayList<Integer>[] adjList;
-                adjList = matrix_to_list(globalAdjMatrix);
+                adjList = matrix_to_list(gAdjMatrix);
 
+                //INITIALIZING A GRAPH (GRAPHSTREAM)
                 MultiGraph graph = new MultiGraph("USE");
 
+                //SETTING UP ATTRIBUTES FOR GRAPH
                 graph.setAttribute("ui.quality");
                 graph.setAttribute("ui.antialias");
 
+                //CREATING GRAPH NODES
                 for(int i=0;i<nodes;i++){
                     graph.addNode(String.valueOf(i+1));
                 }
 
+                //DESIGNING THE NODES
                 for(int i=0;i<nodes;i++){
                     Node e1=graph.getNode(String.valueOf(i+1));
                     e1.setAttribute("ui.style", "shape:circle;fill-color: yellow;size: 40px;");
                     e1.setAttribute("ui.label", String.valueOf((char)(i+ (int)'A')));
                 }
 
+                //CONSTRUCTING THE EDGES WRT THE MATRIX RECEIVED
                 for(int i=0;i<nodes;i++){
                     for(int j=0;j<nodes;j++) {
-                        if(globalAdjMatrix[i][j]==1) {
+                        if(gAdjMatrix[i][j]==1) {
                             String init = String.valueOf(i + 1);
                             String dest = String.valueOf(j + 1);
                             String id = init+dest;
@@ -140,44 +163,55 @@ public class Server {
                     }
                 }
 
+                //TAKING SCREENSHOT OF THE CREATED GRAPH
                 FileSinkImages img = FileSinkImages.createDefault();
 
+                //SETTING UP ALL ATTRIBUTES OF IMAGE
                 img.setOutputType(OutputType.JPG);
                 img.setResolution(400,400);
                 img.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+
+                //STORING THE IMAGE
                 img.writeAll(graph,"graph.jpg");
 
+                //READING THE STORED IMAGE
                 BufferedImage image = ImageIO.read(new File("D:\\Sockets_Assignment\\graph.jpg"));
 
+                //CREATING A BYTE ARRAY FOR OUTPUT STREAM
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+                //WRITING THE IMAGE
                 ImageIO.write(image, "jpg", byteArrayOutputStream);
 
-                // Check whether path length is present in the array
-                boolean pathExists = checkPathLength(adjList, start, end, nodes, pathLength);
+                //CHECK IF THE PATH EXISTS
+                boolean flag = lengthCheck(adjList, start, end, nodes, pathLength);
 
-                // Send the Y or N to the client
-                char response;
-                if(pathExists)
-                    response = 'Y';
+                //SENDING THE RESPONSE TO CLIENT AFTER CHECKING
+                char res;
+                if(flag)
+                    res = 'Y';
                 else
-                    response = 'N';
+                    res = 'N';
 
-                // Send the response
-                output.writeChar(response);
+                //SENDING THE RESPONSE
+                output.writeChar(res);
 
+                //BYTE ARRAY TO STORE THE IMAGE AS BYTES
                 byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
 
                 output.write(size);
+
+                //SENDING THE IMAGE AS BYTES
                 output.write(byteArrayOutputStream.toByteArray());
                 output.flush();
+
                 System.out.println("Flushed: " + System.currentTimeMillis());
                 //Thread.sleep(120000);
                 System.out.println("Closing: " + System.currentTimeMillis());
-                socket.close();
-
             }
-        } catch(IOException ignored){}
+        } catch(IOException e){
+            System.out.println("ERROR: " + e);
+        }
     }
-
 
 }
