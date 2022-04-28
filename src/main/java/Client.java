@@ -73,19 +73,19 @@ public class Client extends JFrame{
         System.out.println();
 
         //TAKING PATH LENGTH AS INPUT
-        System.out.println("Enter the path length");
+        System.out.println("Enter the Path Length");
         int length = input.nextInt();
 
         System.out.println();
 
         //TAKING SOURCE NODE AS INPUT AND CONVERTING IT TO INDEX VALUE
-        System.out.println("Enter the start node");
+        System.out.println("Enter the Source Node");
         int source = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
 
         System.out.println();
 
         //TAKING DESTINATION NODE AS INPUT AND CONVERTING IT TO INDEX VALUE
-        System.out.println("Enter the end node");
+        System.out.println("Enter the Destination Node");
         int dest = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
 
         System.out.println();

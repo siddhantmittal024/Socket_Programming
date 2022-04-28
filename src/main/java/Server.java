@@ -190,7 +190,7 @@ public class Server {
 
                 //SETTING UP ALL ATTRIBUTES OF IMAGE
                 img.setOutputType(OutputType.JPG);
-                img.setResolution(400,400);
+                img.setResolution(450,450);
                 img.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
 
                 //STORING THE IMAGE
