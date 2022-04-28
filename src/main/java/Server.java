@@ -117,16 +117,33 @@ public class Server {
                 //OUTPUT STREAM TO STORE THE OUTPUT AND SEND TO CLIENT
                 output = new DataOutputStream(socket.getOutputStream());
 
-                //READING DATA FROM CLIENT
-                int pathLength = input.readInt();
-                int start = input.readInt();
-                int end = input.readInt();
-
                 //STORING THE INPUT MATRIX
                 nodes = input.readInt();
                 for (int i = 0; i < nodes; i++)
                     for (int j = 0; j < nodes; j++)
                         gAdjMatrix[i][j] = input.readInt();
+
+                //READING DATA FROM CLIENT
+                int length = input.readInt();
+                int source = input.readInt();
+                int dest = input.readInt();
+
+                System.out.println("Number of Nodes Received: " + nodes + "\n");
+
+                System.out.println("Received ADJACENCY MATRIX: " + "\n");
+                for (int i = 0; i < nodes; i++) {
+                    for (int j = 0; j < nodes; j++) {
+                        System.out.print(gAdjMatrix[i][j] + " ");
+                    }
+                    System.out.println();
+                }
+
+                System.out.println("Path Length Received: " + length + "\n");
+
+                System.out.println("Source Node Received: " + source + "\n");
+
+                System.out.println("Destination Node Received: " + dest + "\n");
+
 
                 //CONVERTING MATRIX TO LIST
                 ArrayList<Integer>[] adjList;
@@ -156,9 +173,9 @@ public class Server {
                     for(int j=0;j<nodes;j++) {
                         if(gAdjMatrix[i][j]==1) {
                             String init = String.valueOf(i + 1);
-                            String dest = String.valueOf(j + 1);
-                            String id = init+dest;
-                            graph.addEdge(id, init, dest, true);
+                            String end = String.valueOf(j + 1);
+                            String id = init+end;
+                            graph.addEdge(id, init, end, true);
                         }
                     }
                 }
@@ -184,7 +201,7 @@ public class Server {
                 ImageIO.write(image, "jpg", byteArrayOutputStream);
 
                 //CHECK IF THE PATH EXISTS
-                boolean flag = lengthCheck(adjList, start, end, nodes, pathLength);
+                boolean flag = lengthCheck(adjList, source, dest, nodes, length);
 
                 //SENDING THE RESPONSE TO CLIENT AFTER CHECKING
                 char res;
@@ -213,5 +230,4 @@ public class Server {
             System.out.println("ERROR: " + e);
         }
     }
-
 }

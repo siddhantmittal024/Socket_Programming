@@ -18,120 +18,141 @@ import javax.swing.*;
 
 public class Client extends JFrame{
 
+    //GLOBAL IMAGE VARIABLE
     static Image global_img;
 
     public void paint(Graphics g) {
         super.paint(g);
         Image img = global_img;
+        //PAINTING IMAGE FROM RECEIVED BYTES
         g.drawImage(img, 100, 100, this);
     }
 
     /* MAIN FUNCTION */
     public static void main(String[] args) {
 
-        // Collect inputs from the user
         Scanner input = new Scanner(System.in);
 
-        /* Read the matrix */
-        System.out.println("Enter the number of nodes");
+        /* TAKING NUMBER OF NODES FROM USER */
+        System.out.println("Enter the number of nodes (Min: 3 and Max: 10)");
         int nodes = input.nextInt();
 
-        // Declare the matrix
-        int[][] adjMatrix = new int[nodes][nodes];
-        int entry;
-        // Read the matrix values
-        System.out.println("Enter the elements of the matrix");
+        // DECLARING THE MATRIX
+        int[][] adjMat = new int[nodes][nodes];
+        int val;
+
+        // TAKING THE MATRIX AS INPUT FROM USER
+        System.out.println("Enter the elements of Matrix");
         for (int i = 0; i < nodes; i++)
             for (int j = 0; j < nodes; j++) {
-                entry = input.nextInt();
-                if(entry >= 1)
-                    entry = 1;
+                val = input.nextInt();
+                if(val >= 1)
+                    val = 1;
                 else
-                    entry = 0;
-                adjMatrix[i][j] = entry;
+                    val = 0;
+                adjMat[i][j] = val;
             }
 
-        // Display the entered matrix
-        System.out.println("This is the matrix that was entered\n");
+        System.out.println();
+
+        // DISPLAYING THE ENTERED MATRIX WRT THE NODE
+        System.out.println("Entered Matrix");
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < nodes; i++) {
             s.append((char) (i + (int) 'A')).append(": ");
-            for (int j : adjMatrix[i]) {
+            for (int j : adjMat[i]) {
                 s.append(j).append(" ");
             }
             s.append("\n");
         }
         System.out.print(s);
 
-        // Input path length
+        System.out.println();
+
+        //TAKING PATH LENGTH AS INPUT
         System.out.println("Enter the path length");
-        int pathLength = input.nextInt();
+        int length = input.nextInt();
 
-        // Input starting and ending nodes (convert alphabets to index values)
+        System.out.println();
+
+        //TAKING SOURCE NODE AS INPUT AND CONVERTING IT TO INDEX VALUE
         System.out.println("Enter the start node");
-        int start = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
+        int source = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
 
+        //TAKING DESTINATION NODE AS INPUT AND CONVERTING IT TO INDEX VALUE
         System.out.println("Enter the end node");
-        int end = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
+        int dest = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
 
-        // TCP Connection and communication with the server
+        // ESTABLISHING TCP CONNECTION TO COMMUNICATE WITH SERVER
         try {
-            // Make a new client side connection
+            //INITIALIZING A CLIENT SIDE CONNECTION
             Socket clientSocket = new Socket("localhost", 5678);
 
-            // Make a new inputstream object
+            //INPUT STREAM OBJECT TO TAKE INPUT
             DataInputStream dataInput = new DataInputStream(clientSocket.getInputStream());
 
-            // Create an output stream
+            //OUTPUT STREAM OBJECT TO GET OUTPUT
             DataOutputStream dataOutput = new DataOutputStream(clientSocket.getOutputStream());
 
-            // Send data to the server
+            //SENDING DATA TO SERVER
 
-            // Send Path length
-            dataOutput.writeInt(pathLength);
-            dataOutput.flush();
-
-            // Send start and end
-            dataOutput.writeInt(start);
-            dataOutput.flush();
-            dataOutput.writeInt(end);
-            dataOutput.flush();
-
-            // Send the number of nodes and the matrix
+            //SENDING THE NUMBER OF NODES NAD ADJACENCY MATRIX
             dataOutput.writeInt(nodes);
             dataOutput.flush();
 
             for (int i = 0; i < nodes; i++)
                 for (int j = 0; j < nodes; j++)
-                    dataOutput.writeInt(adjMatrix[i][j]);
+                    dataOutput.writeInt(adjMat[i][j]);
             dataOutput.flush();
 
-            // Read the response input from the server
-            char response = dataInput.readChar();
+            //PATH LENGTH SENT
+            dataOutput.writeInt(length);
+            dataOutput.flush();
 
-            // Convert start and end node to alphabets
-            char startNode = (char)((int)start + (int)'A');
-            char endNode = (char)((int)end + (int)'A');
-            String statement = "";
+            //SENDING SOURCE AND DESTINATION NODES
+            dataOutput.writeInt(source);
+            dataOutput.flush();
+            dataOutput.writeInt(dest);
+            dataOutput.flush();
 
-            // Check response from the server
-            if(response == 'Y'){
-                statement = "Yes, there exists a path of length " + pathLength + " from node " + startNode + " to node " + endNode;
-            }else if(response == 'N'){
-                statement = "No, there exists no path of length " + pathLength + " from node " + startNode+ " to node " + endNode;
+            //READ RESPONSE FROM SEVER
+            char res = dataInput.readChar();
+
+            //CONVERTING INT TO CHARS
+            char sNode = (char)((int)source + (int)'A');
+            char dNode = (char)((int)dest + (int)'A');
+
+            String message = "";
+
+            //CHECK RESPONSE AND CREATE DISPLAY MESSAGE
+            if(res == 'Y'){
+                message = "Yes, there exists a path of length " + length + " from node " + sNode + " to node " + dNode + "!";
+            }else if(res == 'N'){
+                message = "No, there exists no path of length " + length + " from node " + sNode+ " to node " + dNode + "!";
             }
 
-            System.out.println(statement);
+            System.out.println(message);
 
+            //CREATING A BYTE ARRAY
             byte[] sizeAr = new byte[4];
+
+            //READING THE BYTES SENT FROM SERVER
             dataInput.read(sizeAr);
 
+            //FIND THE SIZE OF BYTES ARRAY
             int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+
+            //CREATING A BYTE ARRAY FOR IMAGE
             byte[] imageArray = new byte[size];
             dataInput.read(imageArray);
+
+            //CREATING THE IMAGE FROM RECEIVED BYTES
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageArray));
+
+            //STORING THE IMAGE IN GLOBAL VARIABLE TO SEND IT TO CONSTRUCTOR (PAINT) FOR PAINTING THE IMAGE
             global_img = image;
 
+            //DISPLAYING THE IMAGE RECEIVED USING JFrame
             JFrame frame = new Client();
             frame.setTitle("Client");
             frame.setSize(600, 600);
@@ -140,10 +161,12 @@ public class Client extends JFrame{
             System.out.println("Painting the new image.");
             System.out.println("Received Bytes " + image.getHeight() + "x" + image.getWidth() + " : " + System.currentTimeMillis());
 
+            //CLOSING THE CONNECTION
             dataOutput.close();
             clientSocket.close();
 
-        } catch (IOException ex){}
-
+        } catch (IOException ex){
+            System.out.println("ERROR: " + ex);
+        }
     }
 }
