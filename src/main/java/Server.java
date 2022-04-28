@@ -106,7 +106,8 @@ public class Server {
         try{
             //CREATING SERVER SOCKET BINDED TO A PORT
             ServerSocket serverSocket = new ServerSocket(5678);
-            System.out.println("Server Started!!");
+            System.out.println();
+            System.out.println("Welcome, Server Started!");
 
             while(true){
                 Socket socket = serverSocket.accept();
@@ -128,9 +129,11 @@ public class Server {
                 int source = input.readInt();
                 int dest = input.readInt();
 
-                System.out.println("Number of Nodes Received: " + nodes + "\n");
+                System.out.println();
 
-                System.out.println("Received ADJACENCY MATRIX: " + "\n");
+                System.out.println("Received Number of Nodes: " + nodes + "\n");
+
+                System.out.println("Received Adjacency Matrix:");
                 for (int i = 0; i < nodes; i++) {
                     for (int j = 0; j < nodes; j++) {
                         System.out.print(gAdjMatrix[i][j] + " ");
@@ -138,11 +141,13 @@ public class Server {
                     System.out.println();
                 }
 
-                System.out.println("Path Length Received: " + length + "\n");
+                System.out.println();
 
-                System.out.println("Source Node Received: " + source + "\n");
+                System.out.println("Received Path Length: " + length + "\n");
 
-                System.out.println("Destination Node Received: " + dest + "\n");
+                System.out.println("Received Source Node: " + (char)((int)source + (int)'A') + "\n");
+
+                System.out.println("Received Destination Node: " + (char)((int)dest + (int)'A') + "\n");
 
 
                 //CONVERTING MATRIX TO LIST
@@ -221,6 +226,8 @@ public class Server {
                 //SENDING THE IMAGE AS BYTES
                 output.write(byteArrayOutputStream.toByteArray());
                 output.flush();
+
+                System.out.println();
 
                 System.out.println("Flushed: " + System.currentTimeMillis());
                 //Thread.sleep(120000);

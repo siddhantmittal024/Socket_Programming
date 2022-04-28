@@ -33,16 +33,19 @@ public class Client extends JFrame{
 
         Scanner input = new Scanner(System.in);
 
+        System.out.println();
         /* TAKING NUMBER OF NODES FROM USER */
-        System.out.println("Enter the number of nodes (Min: 3 and Max: 10)");
+        System.out.println("Enter the Number of Nodes (Min: 3 and Max: 10)");
         int nodes = input.nextInt();
+
+        System.out.println();
 
         // DECLARING THE MATRIX
         int[][] adjMat = new int[nodes][nodes];
         int val;
 
         // TAKING THE MATRIX AS INPUT FROM USER
-        System.out.println("Enter the elements of Matrix");
+        System.out.println("Enter the Elements of Matrix");
         for (int i = 0; i < nodes; i++)
             for (int j = 0; j < nodes; j++) {
                 val = input.nextInt();
@@ -79,9 +82,13 @@ public class Client extends JFrame{
         System.out.println("Enter the start node");
         int source = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
 
+        System.out.println();
+
         //TAKING DESTINATION NODE AS INPUT AND CONVERTING IT TO INDEX VALUE
         System.out.println("Enter the end node");
         int dest = (int)Character.toUpperCase(input.next().charAt(0)) - (int)'A';
+
+        System.out.println();
 
         // ESTABLISHING TCP CONNECTION TO COMMUNICATE WITH SERVER
         try {
@@ -131,7 +138,9 @@ public class Client extends JFrame{
                 message = "No, there exists no path of length " + length + " from node " + sNode+ " to node " + dNode + "!";
             }
 
-            System.out.println(message);
+            System.out.println("Message Received: " + message);
+
+            System.out.println();
 
             //CREATING A BYTE ARRAY
             byte[] sizeAr = new byte[4];
@@ -154,12 +163,13 @@ public class Client extends JFrame{
 
             //DISPLAYING THE IMAGE RECEIVED USING JFrame
             JFrame frame = new Client();
-            frame.setTitle("Client");
+            frame.setTitle("Graph Visualization");
             frame.setSize(600, 600);
             frame.setVisible(true);
 
-            System.out.println("Painting the new image.");
-            System.out.println("Received Bytes " + image.getHeight() + "x" + image.getWidth() + " : " + System.currentTimeMillis());
+            System.out.println("Getting the graph image....");
+            System.out.println();
+            System.out.println("Received Bytes (" + image.getHeight() + "x" + image.getWidth() + ") : " + System.currentTimeMillis());
 
             //CLOSING THE CONNECTION
             dataOutput.close();
