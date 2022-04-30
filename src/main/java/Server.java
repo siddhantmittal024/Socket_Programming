@@ -149,10 +149,11 @@ public class Server {
 
                 System.out.println("Received Destination Node: " + (char)((int)dest + (int)'A') + "\n");
 
-
                 //CONVERTING MATRIX TO LIST
                 ArrayList<Integer>[] adjList;
                 adjList = matrix_to_list(gAdjMatrix);
+
+                System.out.println("Adjacency List");
 
                 //INITIALIZING A GRAPH (GRAPHSTREAM)
                 MultiGraph graph = new MultiGraph("USE");
