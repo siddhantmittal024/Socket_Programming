@@ -14,10 +14,12 @@ For simplicity, assume that the above graph can have minimum 3 nodes and maximum
 For example: Let’s take a 3-node directed graph: **Case 1:** Client sends the following to the server: *Input:*  
 
 
-|*0* |*1* |*0* |    *, 2, A, C* 
+|*0* |*1* |*0* |    
 | - | - | - |
 |*1* |*0* |*1* |
 |*0* |*0* |*0* |
+
+*, 2, A, C* 
 
 Where, there is an adjacency matrix, 2 is the length of the path from node A to node C – that server has to check whether it exists or not. 
 
@@ -25,7 +27,9 @@ Server should return the following:
 
 *Output 1: Yes, there exists a path of length 2 from node A to node C.* 
 
-*Output 2: Graph: ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
+*Output 2: Graph: 
+
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
 
 **Case 2:** Client sends the following to the server: *Input:* 
 
@@ -39,7 +43,9 @@ Where, there is an adjacency matrix, 2 is the length of the path from node C to 
 
 *Output 1: No, there is no path of length 2 from node C to node A.* 
 
-*Output 2: Graph:  ![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
+*Output 2: Graph:  
+
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
 
 Submission Template 
 
@@ -49,17 +55,15 @@ To run the program:
 - Used Maven to create the project. So, install these libraries through maven or maybe through official website[(http://graphstream-project.org/download/)](http://graphstream-project.org/download/) and add .jar files. 
 - Load the dependencies in the project and import the required packages to run the project successfully. 
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.002.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.002.jpeg)
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.003.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.003.jpeg)
 
 - Change the path to read the created image (w.r.t your file directory) 
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.004.png)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.004.png)
 
 Change the pathname according to your directory in which this project exists or where the created graph image gets saved. 
-
-- [Screenshots ](file://///Screenshots)of Input and Output Screens 
 
 Sample Input 1:  
 
@@ -73,15 +77,15 @@ Destination Node: D
 
 SERVER + CLIENT WINDOWS:  
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.005.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.005.jpeg)
 
 VISUALIZING GRAPH:  
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
 
 GRAPH + CLIENT WINDOW 
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.007.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.007.jpeg)
 
 Sample Input 2:  
 
@@ -95,14 +99,14 @@ Destination Node: D
 
 SERVER + CLIENT WINDOWS:  
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.008.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.008.jpeg)
 
 GRAPH + CLIENT WINDOW 
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.009.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.009.jpeg)
 
 VISUALIZING GRAPH:  
 
-![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ 
