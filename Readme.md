@@ -1,6 +1,6 @@
-**Computer Networks (CSD304) – Socket Programming  Graded Assignment** 
+### Computer Networks (CSD304) – Socket Programming  Graded Assignment 
 
-**Question**  
+#### Question  
 
 Write a program that involves a client and a server. The client sends server 4 values, for example *X, n, B, C* where, X is the adjacency matrix of a directed graph with *m* nodes  (let’s say 5 nodes: A B C D E), and *n* is the length of the path from node B to node C. 
 
@@ -14,11 +14,10 @@ For simplicity, assume that the above graph can have minimum 3 nodes and maximum
 For example: Let’s take a 3-node directed graph: **Case 1:** Client sends the following to the server: *Input:*  
 
 
-|*0* |*1* |*0* |
+|*0* |*1* |*0* |    *, 2, A, C* 
 | - | - | - |
 |*1* |*0* |*1* |
 |*0* |*0* |*0* |
-*, 2, A, C* 
 
 Where, there is an adjacency matrix, 2 is the length of the path from node A to node C – that server has to check whether it exists or not. 
 
@@ -26,7 +25,7 @@ Server should return the following:
 
 *Output 1: Yes, there exists a path of length 2 from node A to node C.* 
 
-*Output 2: Graph: ![](Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
+*Output 2: Graph: ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
 
 **Case 2:** Client sends the following to the server: *Input:* 
 
