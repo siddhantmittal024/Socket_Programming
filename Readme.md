@@ -15,7 +15,7 @@ For example: Let’s take a 3-node directed graph:
 
 ### Case 1: Client sends the following to the server: 
 
-#### Input:  
+### Input:  
 
 |*0* |*1* |*0* |    
 | - | - | - |
@@ -28,15 +28,15 @@ Where, there is an adjacency matrix, 2 is the length of the path from node A to 
 
 Server should return the following: 
 
-#### Output 1: Yes, there exists a path of length 2 from node A to node C.
+### Output 1: Yes, there exists a path of length 2 from node A to node C.
 
-#### Output 2: Graph: 
+### Output 2: Graph: 
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
 
 ### Case 2: Client sends the following to the server:
 
-#### Input: 
+### Input: 
 
 |*0* |*1* |*0* |
 | - | - | - |
@@ -47,9 +47,9 @@ Path Length, Source Node, Destination Node: 2, C, A
 
 Where, there is an adjacency matrix, 2 is the length of the path from node C to node A. Server should return the following: 
 
-#### Output 1: No, there is no path of length 2 from node C to node A.
+### Output 1: No, there is no path of length 2 from node C to node A.
 
-#### Output 2: Graph:  
+### Output 2: Graph:  
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
 
@@ -69,7 +69,7 @@ Where, there is an adjacency matrix, 2 is the length of the path from node C to 
 
 Change the pathname according to your directory in which this project exists or where the created graph image gets saved. 
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ 
 
 ### Sample Input 1:  
 
@@ -83,15 +83,15 @@ Source Node: A
 
 Destination Node: D 
 
-#### Server + Client Windows:  
+### Server + Client Windows:  
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.005.jpeg)
 
-#### Visualizing Graph:  
+### Visualizing Graph:  
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
 
-#### Graph + Client Window:
+### Graph + Client Window:
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.007.jpeg)
 
@@ -107,16 +107,16 @@ Source Node: A
 
 Destination Node: D 
 
-#### Server + Client Windows:
+### Server + Client Windows:
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.008.jpeg)
 
-#### Graph + Client Window:
+### Graph + Client Window:
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.009.jpeg)
 
-#### Visualizing Graph:  
+### Visualizing Graph:  
 
 ![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.006.jpeg)
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ 
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  
