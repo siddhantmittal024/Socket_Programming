@@ -34,7 +34,7 @@ Server should return the following:
 
 Graph: 
 
-![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)*
+![](/images/Aspose.Words.9d461e70-fd9e-4849-ba70-a2c63f00eadf.001.png)
 
 ### Case 2: Client sends the following to the server:
 
